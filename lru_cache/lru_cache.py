@@ -13,8 +13,9 @@ class LRUCache:
     """
 
     def __init__(self, limit=10):
-        self.storage = DoublyLinkedList()
+        self.storage = {}
         self.limit = limit
+        self.ordering = DoublyLinkedList()
         self.size = 0
 
     """
@@ -26,7 +27,12 @@ class LRUCache:
     """
 
     def get(self, key):
-        pass
+        if key in self.storage:
+            node = self.storage[key]
+            self.ordering.move_to_end(node)
+            return node.value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -40,8 +46,16 @@ class LRUCache:
     """
 
     def set(self, key, value):
+        if key in self.storage:
+            node = self.storage[key]
+            node.value = (key, value)
+            self.ordering.move_to_end(node)
+            return
+        elif self.size == self.limit:
+            oldest_key = self.ordering.head.value[0]
+            del self.storage[oldest_key]
+            self.ordering.remove_from_head()
+            self.size -= 1
+        self.ordering.add_to_tail((key, value))
+        self.storage[key] = self.ordering.tail
         self.size += 1
-        self.storage.add_to_head(value)
-
-    def len(self):
-        return self.size

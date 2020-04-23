@@ -68,17 +68,27 @@ class BinarySearchTree:
     # Hint:  Use a recursive, depth first traversal
 
     def in_order_print(self, node):
-        if self.left is not None:
+        if self.left:
             self.left.in_order_print(self.left)
         print(self.value)
-        if self.right is not None:
+        if self.right:
             self.right.in_order_print(self.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
 
     def bft_print(self, node):
-        pass
+        if node is None:
+            return
+        q = Queue()
+        q.enqueue(node)
+        while q.size > 0:
+            cur = q.dequeue()
+            print(cur.value)
+            if cur.left:
+                q.enqueue(cur.left)
+            if cur.right:
+                q.enqueue(cur.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal

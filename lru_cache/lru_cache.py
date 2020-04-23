@@ -50,7 +50,6 @@ class LRUCache:
             node = self.storage[key]
             node.value = (key, value)
             self.ordering.move_to_front(node)
-            return
         elif self.size == self.limit:
             oldest_key = self.ordering.tail.value[0]
             del self.storage[oldest_key]
